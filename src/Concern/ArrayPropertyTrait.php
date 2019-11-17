@@ -2,14 +2,14 @@
 
 namespace Swoft\Stdlib\Concern;
 
-use function array_merge;
+use Swoft\Stdlib\Helper\ArrayHelper;
 
 /**
- * Trait DataPropertyTrait
+ * Class ArrayPropertyTrait
  *
- * @since 2.0.6
+ * @since 2.0
  */
-trait DataPropertyTrait
+trait ArrayPropertyTrait
 {
     /**
      * User custom data
@@ -19,18 +19,20 @@ trait DataPropertyTrait
     protected $data = [];
 
     /**
-     * Set value to data
+     * Set value to  context
+     * If key is like `a.b`. Equal to set $context['a']['b'] = $value
      *
      * @param string $key
      * @param mixed  $value
      */
     public function set(string $key, $value): void
     {
-        $this->data[$key] = $value;
+        ArrayHelper::set($this->data, $key, $value);
     }
 
     /**
-     * Get value from data by key
+     * Get value from context
+     * If key is like `a.b`. Equal to get $context['a']['b']
      *
      * @param string $key
      * @param mixed  $default
@@ -39,7 +41,7 @@ trait DataPropertyTrait
      */
     public function get(string $key, $default = null)
     {
-        return $this->data[$key] ?? $default;
+        return ArrayHelper::get($this->data, $key, $default);
     }
 
     /**
@@ -49,11 +51,11 @@ trait DataPropertyTrait
      */
     public function unset(string $key): void
     {
-        unset($this->data[$key]);
+        ArrayHelper::forget($this->data, $key);
     }
 
     /**
-     * Check if an item exists in an array
+     * Check if an item exists in an array using "dot" notation.
      *
      * @param string $key
      *
@@ -61,7 +63,7 @@ trait DataPropertyTrait
      */
     public function has(string $key): bool
     {
-        return isset($this->data[$key]);
+        return ArrayHelper::has($this->data, $key);
     }
 
     /**
